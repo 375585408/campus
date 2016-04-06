@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campusapp.dao.InfoTypeMapper">
+
+    <resultMap id="InfoTypeMap" type="InfoType">
+        <id property="id" column="infotype_id" javaType="java.lang.String"/>
+        <result  property="typeName" column="typename" javaType="java.lang.String"/>
+        <result property="infoTypeNum" column="infotypenum" javaType="java.lang.Integer"/>
+        <result property="description" column="description" javaType="java.lang.String"/>
+    </resultMap>
+
+
+
+    <insert id="addInfoType" parameterType="InfoType">
+        <selectKey keyProperty="id" keyColumn="infotype_id" order="BEFORE" resultType="java.lang.String">
+            SELECT uuid()
+        </selectKey>
+        INSERT INTO infotype_table (infotype_id,typename,description,infotypenum) VALUES
+        (
+        #{id},
+        #{typeName},
+        #{description},
+        #{infoTypeNum}
+        )
+    </insert>
+    <select id="findInfoType" parameterType="java.lang.String" resultMap="InfoTypeMap">
+        SELECT * FROM  infotype_table WHERE  infotype_id=#{id}
+    </select>
+    <select id="findInfoTypeByType" parameterType="java.lang.String" resultMap="InfoTypeMap">
+        SELECT * FROM  infotype_table WHERE infotypenum=#{typeNum}
+     </select>
+
+    <select id="findAllInfoType" resultMap="InfoTypeMap">
+        SELECT * FROM infotype_table
+    </select>
+
+    <update id="updateInfoType"  parameterType="InfoType">
+        UPDATE infotype_table SET typename = #{typeName},infotypenum=#{infoTypeNum},description=#{description} WHERE infotype_id=#{id}
+    </update>
+
+    <delete id="deleteInfoType" parameterType="java.lang.String">
+        DELETE FROM infotype_table WHERE infotype_id=#{id}
+    </delete>
+    <delete id="deleteAllInfoType" >
+        DELETE FROM infotype_table
+    </delete>
+
+
+</mapper>

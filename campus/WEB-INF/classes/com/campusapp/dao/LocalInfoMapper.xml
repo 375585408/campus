@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.campusapp.dao.LocalInfoMapper">
+
+    <resultMap type="LocalInfo" id="LocalInfoResult">
+        <id property="id" column="localinfo_id" javaType="java.lang.String"/>
+        <result column="remotaurl" property="remotaurl" javaType="java.lang.String"/>
+        <result column="localurl" property="localurl" javaType="java.lang.String"/>
+    </resultMap>
+
+
+    <!--add a user object instances-->
+    <insert id="addLocalInfo" parameterType="LocalInfo">
+        <selectKey keyProperty="id" keyColumn="localinfo_id" order="BEFORE" resultType="java.lang.String">
+            SELECT uuid()
+        </selectKey>
+        INSERT INTO localinfo_table (localinfo_id,localurl,remotaurl) VALUES
+        (#{id},
+        #{localurl},
+        #{remotaurl}
+        )
+    </insert>
+
+    <!--delete a info by CustomizeInfo-->
+    <delete id="deleteLocalInfo" parameterType="java.lang.String">
+          DELETE FROM localinfo_table WHERE localinfo_id=#{id}
+      </delete>
+
+    <delete id="deleteAllInfo">
+        DELETE FROM localinfo_table
+    </delete>
+
+    <!--update a user instances by id of info instances-->
+    <update id="updateLocalInfo" parameterType="LocalInfo">
+    UPDATE localinfo_table SET localurl=#{localurl},remotaurl=#{remotaurl} WHERE localinfo_id=#{id}
+    </update>
+
+    <!--select a user instances by id of info-->
+    <select id="findLocalInfo" parameterType="java.lang.String" resultMap="LocalInfoResult">
+         SELECT * FROM localinfo_table WHERE localinfo_id = #{id}
+     </select>
+
+    <select id="findLocalInfoByRenotaurl" parameterType="java.lang.String" resultMap="LocalInfoResult">
+        SELECT * FROM localinfo_table where remotaurl=#{remotaurl};
+    </select>
+
+    <select id="findAllLocalInfo" resultMap="LocalInfoResult">
+        SELECT * FROM localinfo_table
+    </select>
+</mapper>

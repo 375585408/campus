@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campusapp.dao.ImageMapper">
+
+    <resultMap type="Image" id="ImageResult">
+        <id property="id" column="image_id" javaType="java.lang.String"/>
+        <result column="title" property="title" javaType="java.lang.String"/>
+        <result column="imageurl" property="imageUrl" javaType="java.lang.String"/>
+        <result column="pagerurl" property="pagerUrl" javaType="java.lang.String"/>
+    </resultMap>
+
+
+    <!--add a user object instances-->
+    <insert id="addImage" parameterType="Image">
+        <selectKey keyProperty="id" keyColumn="image_id" order="BEFORE" resultType="java.lang.String">
+            SELECT uuid()
+        </selectKey>
+        INSERT INTO image_table (image_id,title,imageurl,pagerurl) VALUES
+        (#{id},
+        #{title},
+        #{imageUrl},
+        #{pagerUrl}
+        )
+
+    </insert>
+
+
+    <delete id="deleteImage" parameterType="java.lang.String">
+          DELETE FROM image_table WHERE image_id=#{id}
+      </delete>
+    <delete id="deleteAllImage">
+        DELETE FROM image_table
+    </delete>
+
+
+    <update id="updateImage" parameterType="Image">
+    UPDATE image_table SET title=#{title},imageurl=#{imageUrl},pagerurl=#{pagerUrl} WHERE image_id=#{id}
+    </update>
+
+
+    <select id="findImage" parameterType="java.lang.String" resultMap="ImageResult">
+         SELECT * FROM image_table WHERE image_id = #{id}
+     </select>
+
+    <select id="findImageByPagerUrl" parameterType="java.lang.String" resultMap="ImageResult">
+        SELECT * FROM image_table WHERE pagerurl = #{pagerUrl}
+    </select>
+
+
+    <select id="findAllImage" resultMap="ImageResult">
+        SELECT * FROM image_table
+    </select>
+
+
+</mapper>

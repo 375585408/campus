@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <typeAliases>
+        <!--  <package name="com.zaizai.campusmagic.domain"/>
+          <package name="com.zaizai.campusmagic.customize"/>-->
+        <typeAlias type="com.campusapp.domain.Info" alias="Info"/>
+        <typeAlias type="com.campusapp.domain.InfoType" alias="InfoType"/>
+        <typeAlias type="com.campusapp.domain.LocalInfo" alias="LocalInfo"/>
+        <typeAlias type="com.campusapp.domain.customize.CustomizeInfo" alias="CustomizeInfo"/>
+        <typeAlias type="com.campusapp.domain.ExtractTime" alias="ExtractTime"/>
+        <typeAlias type="com.campusapp.domain.Image" alias="Image"/>
+    </typeAliases>
+
+    <!--   <typeHandlers>
+           <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="java.math.RoundingMode"/>
+       </typeHandlers>-->
+    <!--与spring整合后，数据源交由spring管理-->
+    <!--   &lt;!&ndash;引入数据库配置文件&ndash;&gt;
+       <properties resource="jdbc.properties">
+       </properties>
+       &lt;!&ndash; 和spring整合后 environments配置将废除&ndash;&gt;
+       <environments default="development">
+           <environment id="development">
+               &lt;!&ndash; 使用jdbc事务管理&ndash;&gt;
+               <transactionManager type="JDBC"/>
+               &lt;!&ndash; 数据库连接池&ndash;&gt;
+               <dataSource type="POOLED">
+                   <property name="driver" value="com.mysql.jdbc.Driver"/>
+                   <property name="url" value="jdbc:mysql://localhost:3306/campusmagicdb?characterEncoding=utf-8"/>
+                   <property name="username" value="root"/>
+                   <property name="password" value="root"/>
+               </dataSource>
+           </environment>
+       </environments>-->
+
+
+    <!--以交给applicationContext-dao.xml管理-->
+    <!-- <mappers>
+           <package name="com.campusapp.dao"/>
+       </mappers>-->
+</configuration>

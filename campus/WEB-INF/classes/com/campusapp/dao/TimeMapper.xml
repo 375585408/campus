@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campusapp.dao.TimeMapper">
+
+    <resultMap type="ExtractTime" id="ExtractTimeMap">
+        <id property="id" column="time_id" javaType="java.lang.String"/>
+        <result column="infoype" property="infoType" javaType="java.lang.Integer"/>
+        <result column="extract_timestamp" property="extractTimestamp" javaType="java.util.Date"/>
+    </resultMap>
+
+
+
+
+    <!--add a user object instances-->
+    <insert id="addExtractTime" parameterType="ExtractTime">
+        <selectKey keyProperty="id" keyColumn="time_id" order="BEFORE" resultType="java.lang.String">
+            SELECT uuid()
+        </selectKey>
+        INSERT INTO time_table (time_id,infotype,extract_timestamp) VALUES
+        (#{id},
+        #{infoType},
+        #{extractTimestamp}
+        )
+    </insert>
+
+    <!--delete a info by CustomizeInfo-->
+    <delete id="deleteExtractTime" parameterType="java.lang.String">
+          DELETE FROM time_table WHERE time_id=#{id}
+      </delete>
+
+    <delete id="deleteAllExtractTime">
+        DELETE FROM time_table
+    </delete>
+
+    <!--update a user instances by id of info instances-->
+    <update id="updateExtractTime" parameterType="ExtractTime">
+    UPDATE time_table SET infotype=#{infoType},extract_timestamp=#{extractTimestamp} WHERE time_id=#{id}
+    </update>
+
+    <!--select a user instances by id of info-->
+    <select id="findExtractTime" parameterType="java.lang.String" resultMap="ExtractTimeMap">
+         SELECT * FROM time_table WHERE time_id = #{id}
+     </select>
+
+
+    <select id="findAllExtractTime"  resultMap="ExtractTimeMap">
+        SELECT * FROM time_table
+    </select>
+
+
+</mapper>

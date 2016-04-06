@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campusapp.dao.InfoMapper">
+
+    <resultMap type="Info" id="InfoResult">
+        <id property="id" column="info_id" javaType="java.lang.String"/>
+        <result column="title" property="title" javaType="java.lang.String"/>
+        <result column="publishtime" property="publishTime" javaType="java.util.Date"/>
+        <result column="contents" property="contents" javaType="java.lang.String"/>
+        <result column="infotype_id" property="infoType" javaType="java.lang.String"/>
+
+    </resultMap>
+
+
+
+
+    <!--add a user object instances-->
+    <insert id="addInfo" parameterType="Info">
+        <selectKey keyProperty="id" keyColumn="info_id" order="BEFORE" resultType="java.lang.String">
+            SELECT uuid()
+        </selectKey>
+        INSERT INTO info_table (info_id,title,publishtime,createtime,contents,infotype_id) VALUES
+        (#{id},
+        #{title},
+        #{publishTime},
+        now(),
+        #{contents},
+        #{infoType})
+
+    </insert>
+
+    <!--delete a info by CustomizeInfo-->
+    <delete id="deleteInfo" parameterType="java.lang.String">
+          DELETE FROM info_table WHERE info_id=#{id}
+      </delete>
+    <delete id="deleteAllInfo">
+        DELETE FROM info_table
+    </delete>
+
+    <!--update a user instances by id of info instances-->
+    <update id="updateInfo" parameterType="Info">
+    UPDATE info_table SET title=#{title},publishtime=#{publishTime},contents=#{contents},infotype_id=#{infoType} WHERE info_id=#{id}
+    </update>
+
+    <!--select a user instances by id of info-->
+    <select id="findInfo" parameterType="java.lang.String" resultMap="InfoResult">
+         SELECT * FROM info_table WHERE info_id = #{id}
+     </select>
+
+    <select id="findInfoOfCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(info_table.title) FROM campusdb.info_table where infotype_id=#{infotype_id}
+    </select>
+
+    <select id="findAllInfo"  resultMap="InfoResult">
+        SELECT * FROM info_table order  by publishtime desc
+    </select>
+
+
+
+    <select id="findAllInfoByinfotype_id" parameterType="java.lang.String" resultMap="InfoResult">
+        SELECT * FROM info_table WHERE info_table.infotype_id = #{infotype_id} order  by publishtime desc
+    </select>
+
+    <!-- select a user instances by CustomizeUser classes object instances-->
+    <sql id="query_info_where_and">
+        <if test="id!=null and id!=''">
+            and info_id = #{id}
+        </if>
+        <if test="title!=null and title!=''">
+            and title = #{title}
+        </if>
+
+        <if test="publishTime!=null ">
+            and publishtime = #{publishTime}
+        </if>
+        <if test="contents!=null and contents!=''">
+            and contents = #{contents}
+        </if>
+
+        <if test="infoType!=null and infoType!=''">
+            and infotype_id = #{infoType}
+        </if>
+    </sql>
+
+    <select id="findInfoByCustomizeInfo" parameterType="CustomizeInfo" resultMap="InfoResult">
+        SELECT * FROM info_table
+        <where>
+            <include refid="query_info_where_and"/>
+
+        </where>
+        order  by publishtime desc
+    </select>
+
+
+
+
+</mapper>
